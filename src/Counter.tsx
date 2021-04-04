@@ -15,7 +15,7 @@ const Counter: React.FC<{}>  = () => {
     setValue((prevState) => prevState - 1)
   }
 
-  // useRefはレンダリングの回数を扱う事ができる
+  // useRefはレンダリングの回数を扱う為に使う
   const renderTimes = useRef(0)
 
   // useEffectはレンダリングされるたびに実行される
@@ -24,6 +24,14 @@ const Counter: React.FC<{}>  = () => {
   useEffect(() => {
     renderTimes.current += 1
   })
+  // useRefにRefObject<T>を型として定義している
+  // null! ・・ non null アサーションオペレータ
+  const ref = useRef<HTMLInputElement>(null!)
+  const focusInput = () => {
+    ref.current.focus()
+    // オプショナルチェイニング
+    // ref.current?.focus()
+  }
 
   return (
     <div>
@@ -31,6 +39,8 @@ const Counter: React.FC<{}>  = () => {
       <button onClick={increment}>+1</button>
       <button onClick={decrement}>-1</button>
       <div>This component was re-rendered { renderTimes.current } times!</div>
+      <input ref={ref} type="text" />
+      <button onClick={focusInput}>Click Me!</button>
     </div>
   )
 }
